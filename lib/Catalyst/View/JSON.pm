@@ -1,7 +1,7 @@
 package Catalyst::View::JSON;
 
 use strict;
-our $VERSION = '0.33';
+our $VERSION = '0.34';
 use 5.008_001;
 
 use base qw( Catalyst::View );
@@ -9,7 +9,7 @@ use Encode ();
 use MRO::Compat;
 use Catalyst::Exception;
 
-__PACKAGE__->mk_accessors(qw( allow_callback callback_param expose_stash encoding json_dumper no_x_json_header ));
+__PACKAGE__->mk_accessors(qw( allow_callback callback_param expose_stash encoding json_dumper no_x_json_header json_encoder_args ));
 
 sub new {
     my($class, $c, $arguments) = @_;
@@ -43,7 +43,9 @@ sub new {
                             } );
     } else {
         require JSON::MaybeXS;
-        $self->json_dumper(sub { JSON::MaybeXS::encode_json($_[0]) });
+        my %args = (utf8=>1, %{$self->json_encoder_args ||+{}});
+        my $json = JSON::MaybeXS->new(%args);
+        $self->json_dumper(sub { $json->encode($_[0]) });
     }
 
     return $self;
@@ -86,14 +88,6 @@ sub process {
 
     # When you set encoding option in View::JSON, this plugin DWIMs
     my $encoding = $self->encoding || 'utf-8';
-
-    # if you pass a valid Unicode flagged string in the stash,
-    # this view automatically transcodes to the encoding you set.
-    # Otherwise it just bypasses the stash data in JSON format
-    # XXX FIXME this is wrong and we should not be doing this.
-    if ( Encode::is_utf8($json) ) {
-        $json = Encode::encode($encoding, $json);
-    }
 
     $c->res->content_type("application/json; charset=$encoding");
 
@@ -216,6 +210,11 @@ By default this plugin sets X-JSON header if the requested client is a
 Prototype.js with X-JSON support. By setting 1, you can opt-out this
 behavior so that you can do eval() by your own. Defaults to 0.
 
+=item json_encoder_args
+
+An optional hashref that supplies arguments to L<JSON::MaybeXS> used when creating
+a new object.
+
 =back
 
 =head1 OVERRIDING JSON ENCODER
@@ -239,6 +238,33 @@ the C<encode_json> method in your View class.
   1;
 
 =head1 ENCODINGS
+
+B<NOTE> Starting in release v5.90080 L<Catalyst> encodes all text
+like body returns as UTF8.  It however ignores content types like
+application/json and assumes that a correct JSON serializer is
+doing what it is supposed to do, which is encode UTF8 automatically.
+In general this is what this view does so you shoulding need to
+mess with the encoding flag here unless you have some odd case.
+
+Also, the comment aboe regard 'browser gotcha's' was written a
+number of years ago and I can't say one way or another if those
+gotchas continue to be common in the wild.
+
+B<NOTE> Setting this configuation has no bearing on how the actual
+serialized string is encoded.  This ONLY sets the content type
+header in your response.  By default we set the 'utf8' flag on
+L<JSON::MaybeXS> so that the string generated and set to your response
+body is proper UTF8 octets that can be transmitted over HTTP.  If
+you are planning to do some alternative encoding you should turn off
+this default via the C<json_encoder_args>:
+
+    MyApp::View::JSON->config(
+      json_encoder_args => +{utf8=>0} );
+
+B<NOTE>In 2015 the use of UTF8 as encoding is widely standard so it
+is very likely you should need to do nothing to get the correct
+encoding.  The following documention will remain for historical
+value and backcompat needs.
 
 Due to the browser gotchas like those of Safari and Opera, sometimes
 you have to specify a valid charset value in the response's
@@ -339,6 +365,10 @@ the response body using the following JavaScript:
   // elsewhere
   var json = this.evalJSON(request);
 
+B<NOTE> The above comments were written a number of years ago and
+I would take then with a grain of salt so to speak.  For now I will
+leave them in place but not sure they are meaningful in 2015.
+
 =head1 SECURITY CONSIDERATION
 
 Catalyst::View::JSON makes the data available as a (sort of)
@@ -414,7 +444,7 @@ Tomas Doran
 
 =head1 SEE ALSO
 
-L<Catalyst>, L<JSON>, L<Encode::JavaScript::UCS>
+L<Catalyst>, L<JSON::MaybeXS>, L<Encode::JavaScript::UCS>
 
 L<http://www.prototypejs.org/learn/json>
 L<http://docs.jquery.com/Ajax/jQuery.getJSON>

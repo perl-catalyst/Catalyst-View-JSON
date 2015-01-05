@@ -90,10 +90,11 @@ my $entrypoint = "http://localhost/foo";
     my $request = HTTP::Request->new( GET => $entrypoint . "?cb=foobar%28" );
 
     ok( my $response = request($request), 'Request' );
-    like $response->header('X-Error'), qr/Invalid callback parameter/;
+    like $response->header('X-Error'), qr/Invalid callback parameter/,;
 }
 
 {
+  ##
     my $request = HTTP::Request->new( GET => "http://localhost/foo3" );
 
     ok( my $response = request($request), 'Request' );
