@@ -97,8 +97,8 @@ sub process {
 
     my $output;
 
-    ## add UTF-8 BOM if the client is Safari
-    if ($encoding eq 'utf-8') {
+    ## add UTF-8 BOM if the client is Safari and it's JSON
+    if ($encoding eq 'utf-8' && !$cb) {
         my $user_agent = $c->req->user_agent || '';
         if ($user_agent =~ m/\bSafari\b/ and $user_agent !~ m/\bChrome\b/) {
             $output = "\xEF\xBB\xBF";
