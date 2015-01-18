@@ -1,6 +1,7 @@
 package Catalyst::View::JSON;
 
 use strict;
+use warnings;
 our $VERSION = '0.35';
 use 5.008_001;
 
