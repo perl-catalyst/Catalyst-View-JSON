@@ -68,6 +68,7 @@ sub process {
             $single_key = $expose;
         } else {
             $c->log->warn("expose_stash should be an array reference, Regexp object, or key for a single stash entry.");
+            $c->log->warn("Returning all stash entries");
         }
     }
 
