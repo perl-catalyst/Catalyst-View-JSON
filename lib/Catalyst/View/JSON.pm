@@ -261,7 +261,7 @@ this default via the C<json_encoder_args>:
     MyApp::View::JSON->config(
       json_encoder_args => +{utf8=>0} );
 
-B<NOTE>In 2015 the use of UTF8 as encoding is widely standard so it
+B<NOTE> In 2015 the use of UTF8 as encoding is widely standard so it
 is very likely you should need to do nothing to get the correct
 encoding.  The following documention will remain for historical
 value and backcompat needs.
