@@ -436,11 +436,11 @@ it under the same terms as Perl itself.
 Following people has been contributing patches, bug reports and
 suggestions for the improvement of Catalyst::View::JSON.
 
-John Wang
-kazeburo
-Daisuke Murase
-Jun Kuriyama
-Tomas Doran
+  John Wang
+  kazeburo
+  Daisuke Murase
+  Jun Kuriyama
+  Tomas Doran
 
 =head1 SEE ALSO
 
