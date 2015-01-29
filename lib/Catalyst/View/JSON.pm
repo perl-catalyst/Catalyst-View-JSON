@@ -67,7 +67,7 @@ sub process {
         } elsif (!ref($expose)) {
             $single_key = $expose;
         } else {
-            $c->log->warn("expose_stash should be an array referernce or Regexp object.");
+            $c->log->warn("expose_stash should be an array reference, Regexp object, or key for a single stash entry.");
         }
     }
 
