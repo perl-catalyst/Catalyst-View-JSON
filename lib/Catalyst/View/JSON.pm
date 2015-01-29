@@ -184,7 +184,7 @@ exposed as a JSON response. Defaults to everything. Examples configuration:
 Suppose you have data structure of the following.
 
   $c->stash->{foo} = [ 1, 2 ];
-  $c->stash->{bar} = [ 3, 4 ];
+  $c->stash->{bar} = 2;
 
 By default, this view will return:
 
