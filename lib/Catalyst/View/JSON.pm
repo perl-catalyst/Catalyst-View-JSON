@@ -30,12 +30,6 @@ sub new {
         }
     }
 
-    my $method = $self->can('encode_json');
-    $self->json_dumper( sub {
-                            my($data, $self, $c) = @_;
-                            $method->($self, $c, $data);
-                        } );
-
     if (my $method = $self->can('encode_json')) {
         $self->json_dumper( sub {
                                 my($data, $self, $c) = @_;
