@@ -9,7 +9,7 @@ use Test::More;
 use Catalyst::Test 'TestApp';
 use JSON::MaybeXS 1.003000 ':legacy';
 
-plan tests => 40;
+plan tests => 48;
 
 BEGIN {
     no warnings 'redefine';
@@ -91,6 +91,24 @@ my $entrypoint = "http://localhost/foo";
 
     ok( my $response = request($request), 'Request' );
     like $response->header('X-Error'), qr/Invalid callback parameter/,;
+}
+
+{
+    my $request = HTTP::Request->new( GET => $entrypoint . "?cb=foobar" );
+    $request->header("User-Agent", "Safari");
+
+    ok( my $response = request($request), 'Request' );
+    ok( $response->is_success, 'Response Successful 2xx' );
+    is( $response->code, 200, 'Response Code' );
+    is_deeply( [ $response->content_type ], [ 'application/json', 'charset=utf-8' ] );
+
+    my $body = $response->content;
+    ok $body =~ s/^foobar\((.*?)\);$/$1/sg, "wrapped in a callback";
+
+    my $data = from_json($body);
+    is $data->{json_foo}, "bar";
+    is_deeply $data->{json_baz}, [ 1, 2, 3 ];
+    ok ! $data->{foo}, "doesn't return stash that doesn't match json_";
 }
 
 {
