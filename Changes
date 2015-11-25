@@ -1,5 +1,14 @@
 Revision history for Perl extension Catalyst::View::JSON
 
+0.36  Wed Nov 25  12:00:00 CT 2015
+        - POD updates, improved warning messages, strictness (andyjack++)
+        - Make the default BOM added for safari optional. Possible breaking
+          change, please file issues if this causes trouble.
+        - New render method to let you just get a JSON encoded version of
+          some data (Added to make compatible with the unofficial Catalyst
+          View API that has a render method).
+        -
+
 0.35  Wed Jan 07  12:00:00 CT 2014
         - Specify a version of JSON::MaybXS in the Makefile to close a test
           failure (test case requires version '1.003000' so we made that the

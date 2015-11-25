@@ -11,6 +11,7 @@ __PACKAGE__->config({
     name => 'TestApp',
     disable_component_resolution_regex_fallback => 1,
     'View::JSON' => {
+        use_force_bom => 1,
         expose_stash => qr/^json_/,
         allow_callback => 1,
         callback_param => 'cb',
