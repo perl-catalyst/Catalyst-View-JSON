@@ -375,6 +375,9 @@ See L<http://developer.yahoo.net/common/json.html> and
 L<http://ajaxian.com/archives/jsonp-json-with-padding> for more about
 JSONP.
 
+B<NOTE> For another way to enable JSONP in your application take a look
+at L<Plack::Middleware::JSONP>
+
 =head1 INTEROPERABILITY
 
 JSON use is still developing and has not been standardized. This
