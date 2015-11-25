@@ -179,7 +179,7 @@ exposed as a JSON response. Defaults to everything. Examples configuration:
 Suppose you have data structure of the following.
 
   $c->stash->{foo} = [ 1, 2 ];
-  $c->stash->{bar} = [ 3, 4 ];
+  $c->stash->{bar} = 2;
 
 By default, this view will return:
 
@@ -256,7 +256,7 @@ this default via the C<json_encoder_args>:
     MyApp::View::JSON->config(
       json_encoder_args => +{utf8=>0} );
 
-B<NOTE>In 2015 the use of UTF8 as encoding is widely standard so it
+B<NOTE> In 2015 the use of UTF8 as encoding is widely standard so it
 is very likely you should need to do nothing to get the correct
 encoding.  The following documention will remain for historical
 value and backcompat needs.
@@ -431,11 +431,11 @@ it under the same terms as Perl itself.
 Following people has been contributing patches, bug reports and
 suggestions for the improvement of Catalyst::View::JSON.
 
-John Wang
-kazeburo
-Daisuke Murase
-Jun Kuriyama
-Tomas Doran
+  John Wang
+  kazeburo
+  Daisuke Murase
+  Jun Kuriyama
+  Tomas Doran
 
 =head1 SEE ALSO
 
