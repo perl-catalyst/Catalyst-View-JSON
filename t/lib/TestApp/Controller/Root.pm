@@ -18,6 +18,21 @@ sub foo : Global {
     $c->forward('View::JSON');
 }
 
+sub warnmsg : Global {
+    my ( $self, $c ) = @_;
+
+    # case where setting expose_stash returns everything in
+    # the stash.  Set a true value to enter to code path
+    # that shows the warning message.
+    $c->component('View::JSON')->expose_stash(\1);
+    $c->stash->{json_foo} = "bar";
+    $c->stash->{json_baz} = [ 1, 2, 3 ];
+    $c->stash->{foo}      = "barbarbar";
+
+    $c->forward('View::JSON');
+}
+
+
 sub foo2 : Global {
     my( $self, $c ) = @_;
 
