@@ -1,6 +1,7 @@
 package Catalyst::Helper::View::JSON;
 
 use strict;
+use warnings;
 
 =head1 NAME
 
