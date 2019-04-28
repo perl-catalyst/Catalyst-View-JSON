@@ -1,5 +1,6 @@
 Revision history for Perl extension Catalyst::View::JSON
 
+0.37 - 2019-04-28
         - fix Makefile.PL when current directory not in @INC (perl 5.26+)
         - convert from Module::Install to Distar for release tooling
         - Drop unneeded prerequisite on YAML
