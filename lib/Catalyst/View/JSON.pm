@@ -2,7 +2,7 @@ package Catalyst::View::JSON;
 
 use strict;
 use warnings;
-our $VERSION = '0.36';
+our $VERSION = '0.37';
 use 5.008_001;
 
 use base qw( Catalyst::View );
